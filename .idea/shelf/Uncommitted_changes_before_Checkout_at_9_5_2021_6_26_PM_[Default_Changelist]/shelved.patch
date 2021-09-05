@@ -1,0 +1,125 @@
+Index: .idea/runConfigurations.xml
+===================================================================
+diff --git a/.idea/runConfigurations.xml b/.idea/runConfigurations.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations.xml	(revision 4e1bcc4984fbc11a869a5ff0281115169d3ccfee)
++++ /dev/null	(revision 4e1bcc4984fbc11a869a5ff0281115169d3ccfee)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RunConfigurationProducerService">
+-    <option name="ignoredProducers">
+-      <set>
+-        <option value="com.android.tools.idea.compose.preview.runconfiguration.ComposePreviewRunConfigurationProducer" />
+-      </set>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: src/main/java/com/case3/service/user/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.case3.service.user;\r\n\r\nimport com.case3.config.ConnectionJDBC;\r\nimport com.case3.model.Category;\r\nimport com.case3.model.Limited;\r\nimport com.case3.model.User;\r\n\r\nimport java.sql.*;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class UserService implements IUserService<User> {\r\n    private static final String UPDATE_STATUS = \"update users set status = ? where id_user = ?;\";\r\n    Connection connection = ConnectionJDBC.getConnection();\r\n    private static final String ADD_EX_CATE = \"insert into expenditure_categories(name_ec,id_icon,id_user) value (?,?,?)\";\r\n    private static final String ADD_RE_CATE = \"insert into revenue_categories(name_rc,id_icon,id_user) value (?,?,?)\";\r\n    private static final String FIND_USER = \"select * from users join role on users.id_role = role.id_role join limited on users.id_user = limited.id_user where username = ? and password = ?;\";\r\n    private static final String ADD_USER = \"insert into users(fullName, phone, username, password, id_role) VALUE (?,?,?,?,?);\";\r\n    private static final String ADD_LIMITED = \"insert into limited(id_user) VALUE (?);\";\r\n    private static final String SELECT_ALL_USERS = \"select * from role join users on role.id_role = users.id_role;\";\r\n    private static List<Category> listExCate = new ArrayList<>();\r\n    private static List<Category> listReCate = new ArrayList<>();\r\n\r\n    static {\r\n        listExCate.add(new Category(\"Tien dien\"));\r\n        listExCate.add(new Category(\"Tien nuoc\"));\r\n        listExCate.add(new Category(\"Tien xang\"));\r\n        listReCate.add(new Category(\"Tien luong\"));\r\n        listReCate.add(new Category(\"Tien thuong\"));\r\n    }\r\n\r\n    @Override\r\n    public List<User> findAll() {\r\n        List<User> users = new ArrayList<>();\r\n\r\n        return users;\r\n\r\n    }\r\n\r\n    @Override\r\n    public User findById(int id) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void save(User user) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void edit(User user, int id) {\r\n\r\n    }\r\n\r\n    public void updateStatus(int id_user, boolean status) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void delete(int id) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public User findByUsernameAndPassword(String username, String password) {\r\n        User user = null;\r\n\r\n        return user;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/case3/service/user/UserService.java b/src/main/java/com/case3/service/user/UserService.java
+--- a/src/main/java/com/case3/service/user/UserService.java	(revision 4e1bcc4984fbc11a869a5ff0281115169d3ccfee)
++++ b/src/main/java/com/case3/service/user/UserService.java	(date 1630838665829)
+@@ -45,6 +45,53 @@
+     @Override
+     public void save(User user) {
+ 
++        try {
++            PreparedStatement preAddUser = connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS);
++            PreparedStatement preAddExCate = connection.prepareStatement(ADD_EX_CATE);
++            PreparedStatement preAddReCate = connection.prepareStatement(ADD_RE_CATE);
++            PreparedStatement preAddLimited = connection.prepareStatement(ADD_LIMITED);
++
++            connection.setAutoCommit(false);
++            preAddUser.setString(1, user.getFullName());
++            preAddUser.setString(2, user.getPhone());
++            preAddUser.setString(3, user.getUsername());
++            preAddUser.setString(4, user.getPassword());
++            preAddUser.setInt(5, 2);
++            preAddUser.executeUpdate();
++            ResultSet resultSet = preAddUser.getGeneratedKeys();
++            int idUser = -1;
++            if (resultSet.next()) {
++                idUser = resultSet.getInt(1);
++            }
++            int idIcon = 1;
++            for (Category category : listExCate
++            ) {
++                String namecate = category.getName();
++                preAddExCate.setString(1, category.getName());
++                preAddExCate.setInt(2, idIcon);
++                preAddExCate.setInt(3, idUser);
++                preAddExCate.executeUpdate();
++                idIcon++;
++            }
++            for (Category category : listReCate
++            ) {
++                preAddReCate.setString(1, category.getName());
++                preAddReCate.setInt(2, idIcon);
++                preAddReCate.setInt(3, idUser);
++                preAddReCate.executeUpdate();
++                idIcon++;
++            }
++            preAddLimited.setInt(1, idUser);
++            preAddLimited.executeUpdate();
++            connection.commit();
++        } catch (SQLException throwables) {
++            try {
++                connection.rollback();
++            } catch (SQLException e) {
++                e.printStackTrace();
++            }
++            throwables.printStackTrace();
++        }
+     }
+ 
+     @Override
+@@ -53,7 +100,14 @@
+     }
+ 
+     public void updateStatus(int id_user, boolean status) {
+-
++        try {
++            PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS);
++            statement.setBoolean(1, status);
++            statement.setInt(2, id_user);
++            statement.executeUpdate();
++        } catch (SQLException throwables) {
++            throwables.printStackTrace();
++        }
+     }
+ 
+     @Override
+@@ -64,7 +118,25 @@
+     @Override
+     public User findByUsernameAndPassword(String username, String password) {
+         User user = null;
+-
++        try {
++            PreparedStatement preFindUser = connection.prepareStatement(FIND_USER);
++            preFindUser.setString(1, username);
++            preFindUser.setString(2, password);
++            ResultSet resultSet = preFindUser.executeQuery();
++            while (resultSet.next()) {
++                int id = resultSet.getInt("id_user");
++                String fullName = resultSet.getString("fullName");
++                String phone = resultSet.getString("phone");
++                String role = resultSet.getString("name_role");
++                boolean status = resultSet.getBoolean("status");
++                int idLimited = resultSet.getInt("id_limited");
++                int limitDay = resultSet.getInt("limit_day");
++                int limitMonth = resultSet.getInt("limit_month");
++                user = new User(id, fullName, phone, username, password, role, status, new Limited(idLimited, limitDay, limitMonth));
++            }
++        } catch (SQLException throwables) {
++            throwables.printStackTrace();
++        }
+         return user;
+     }
+ }
