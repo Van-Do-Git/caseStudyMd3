@@ -180,6 +180,14 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void showHomepage(HttpServletRequest request, HttpServletResponse response) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
 
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
