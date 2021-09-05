@@ -72,64 +72,180 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public List<Expenditure> findAll() {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_ALL_EXPENDITURE);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                Date date = rs.getDate(2);
+                int money = rs.getInt(3);
+                String note = rs.getString(4);
+                Category category = categoryExService.findById(rs.getInt(5));
+                expenditures.add(new Expenditure(id, category, date, money, note));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
     @Override
     public Expenditure findById(int id) {
         Expenditure expenditure = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_ID);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Date date = rs.getDate(2);
+                int money = rs.getInt(3);
+                String note = rs.getString(4);
+                Category category = categoryExService.findById(rs.getInt(5));
+                expenditure = new Expenditure(id, category, date, money, note);
+            }
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditure;
     }
 
     @Override
     public void save(Expenditure e) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(II_EXPENDITURE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setString(1, dateFormat.format(e.getDate()));
+            statement.setInt(2, e.getMoney());
+            statement.setString(3, e.getNote());
+            statement.setInt(4, e.getCategory().getId());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
     public void edit(Expenditure e, int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(UPDATE_EXPENDITURE_BY_ID);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setString(1, dateFormat.format(e.getDate()));
+            statement.setInt(2, e.getMoney());
+            statement.setString(3, e.getNote());
+            statement.setInt(4, e.getCategory().getId());
+            statement.setInt(5, id);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
     public void delete(int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_EXPENDITURE_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
     public List<Expenditure> findByDay(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_DAY_AND_USER_ID);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
     @Override
     public List<Expenditure> findByWeek(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_USER_ID_AND_WEEK_OF_DATE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
+
     }
 
     @Override
     public List<Expenditure> findByMonth(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_USER_ID_AND_MONTH_OF_DATE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
     @Override
     public List<Expenditure> findByMoney(int minMoney, int maxMoney, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_MONEY_AND_USER_ID);
+            statement.setInt(1, id_user);
+            statement.setInt(2, minMoney);
+            statement.setInt(3, maxMoney);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByWeek(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureByCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_WEEK_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureByCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureByCategories;
 
     }
@@ -137,14 +253,40 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByMonth(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureByCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_MONTH_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureByCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureByCategories;
     }
 
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByDay(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_DAY_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureCategories;
     }
 

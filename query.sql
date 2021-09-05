@@ -136,4 +136,6 @@ SELECT eC.name_ec, sum(money_ex)
                     WHERE id_user = 12 AND month(date_ex)=month(?)
                     GROUP BY eC.name_ec;
 
+update icon set link_icon = ? where id_icon = ?;
 
+insert into icon(link_icon) value (?);

@@ -60,11 +60,32 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void showFormAddCategory(HttpServletRequest request, HttpServletResponse response) {
-
+        String type = "exp";
+        List<Icon> iconList = iconService.findAll();
+        request.setAttribute("icon", iconList);
+        request.setAttribute("type", type);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/addcate.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showFormEditExpenditure(HttpServletRequest request, HttpServletResponse response) {
-
+        int id_ex = Integer.parseInt(request.getParameter("idexp"));
+        Expenditure expenditure = expenditureService.findById(id_ex);
+        request.setAttribute("ex", expenditure);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/editexp.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -107,7 +128,26 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void showListByMoney(HttpServletRequest request, HttpServletResponse response) {
-
+        int min = Integer.parseInt(request.getParameter("min"));
+        int max = Integer.parseInt(request.getParameter("max"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        List<Expenditure> listMoney = expenditureService.findByMoney(min, max, user.getId());
+        int totalMoney = 0;
+        for (int i = 0; i < listMoney.size(); i++) {
+            totalMoney += listMoney.get(i).getMoney();
+        }
+        request.setAttribute("map",null);
+        request.setAttribute("totalMoney", totalMoney);
+        request.setAttribute("listEx", listMoney);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/expenditure.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addNewCategory(HttpServletRequest request, HttpServletResponse response) {
@@ -135,7 +175,7 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void editExpenditure(HttpServletRequest request, HttpServletResponse response) {
-
+        System.out.println("");
     }
 
     private void addNewExpenditure(HttpServletRequest request, HttpServletResponse response) {

@@ -69,7 +69,20 @@ public class RevenueService implements IRenExpService<Revenue> {
     @Override
     public List<Revenue> findAll() {
         List<Revenue> revenues = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_ALL_REVENUE);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                Date date = rs.getDate(2);
+                int money = rs.getInt(3);
+                String note = rs.getString(4);
+                Category category = categoryReService.findById(rs.getInt(5));
+                revenues.add(new Revenue(id, category, date, money, note));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return revenues;
     }
 

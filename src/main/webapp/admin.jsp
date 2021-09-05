@@ -62,6 +62,43 @@
             </c:forEach>
         </table>
     </div>
+    <div class="col-12">
+        <table style="width: 100%">
+            <tr>
+                <th>ICON</th>
+                <th>Link ICon</th>
+                <th>Sửa ICon</th>
+            </tr>
+
+            <c:forEach items="${icon}" var="icon">
+                <form action="/homepage?action=editIcon" method="post">
+                    <tr>
+                        <td><img width="50px" height="50px" src="${icon.linkIcon}"/></td>
+                        <td><input name="linkIcon" value="${icon.linkIcon}">
+                            <input name="idIcon" value="${icon.idIcon}" style="display: none">
+                        </td>
+                        <td>
+                            <button type="submit">Sửa</button>
+                        </td>
+                    </tr>
+                </form>
+            </c:forEach>
+        </table>
+        <form method="post" action="/homepage?action=addIcon">
+            <table>
+                <tr>
+                    <th>Link ICon</th>
+                    <th>Thêm Icon</th>
+                </tr>
+                <tr>
+                    <td><input name="linkIcon" value="" type="text"></td>
+                    <td>
+                        <button type="submit">Thêm</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </section>
 <div class="row">
     <footer>
