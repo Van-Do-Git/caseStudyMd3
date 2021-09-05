@@ -127,7 +127,18 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
 
     @Override
     public void edit(Expenditure e, int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(UPDATE_EXPENDITURE_BY_ID);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setString(1, dateFormat.format(e.getDate()));
+            statement.setInt(2, e.getMoney());
+            statement.setString(3, e.getNote());
+            statement.setInt(4, e.getCategory().getId());
+            statement.setInt(5, id);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
