@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IconService {
+    //Chua thay code o day bi loi.
+    //Chua thay code o day bi loi.
+    //Chua thay code o day bi loi.
+    //Chua thay code o day bi loi.
     private static final String FIND_ALL_ICON = "select * from icon;";
     private static final String UPDATE_ICON = "update icon set link_icon = ? where id_icon = ?;";
     private static final String ADD_ICON = "insert into icon(link_icon) value (?);";
@@ -34,9 +38,6 @@ public class IconService {
         return listIcon;
     }
 
-<<<<<<< HEAD
-}
-=======
     public void editIcon(int id, String linkIcon) {
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_ICON);
@@ -58,4 +59,3 @@ public class IconService {
         }
     }
 }
->>>>>>> d4b6af7f51f33c0d3b251eabc158a42653ebdd74

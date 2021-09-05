@@ -3,6 +3,7 @@ package com.case3.service.ren_exp;
 import com.case3.config.ConnectionJDBC;
 import com.case3.model.Category;
 import com.case3.model.Expenditure;
+import com.case3.service.category.CategoryExService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -288,5 +289,4 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
         }
         return sumMoneyExpenditureCategories;
     }
-
 }
