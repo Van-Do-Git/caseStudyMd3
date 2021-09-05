@@ -135,7 +135,7 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void editExpenditure(HttpServletRequest request, HttpServletResponse response) {
-
+        System.out.println("");
     }
 
     private void addNewExpenditure(HttpServletRequest request, HttpServletResponse response) {
