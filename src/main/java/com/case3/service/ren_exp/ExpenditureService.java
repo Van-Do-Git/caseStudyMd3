@@ -72,7 +72,20 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public List<Expenditure> findAll() {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_ALL_EXPENDITURE);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                Date date = rs.getDate(2);
+                int money = rs.getInt(3);
+                String note = rs.getString(4);
+                Category category = categoryExService.findById(rs.getInt(5));
+                expenditures.add(new Expenditure(id, category, date, money, note));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
