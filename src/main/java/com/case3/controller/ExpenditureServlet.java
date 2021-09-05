@@ -60,7 +60,18 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void showFormAddCategory(HttpServletRequest request, HttpServletResponse response) {
-
+        String type = "exp";
+        List<Icon> iconList = iconService.findAll();
+        request.setAttribute("icon", iconList);
+        request.setAttribute("type", type);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/addcate.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showFormEditExpenditure(HttpServletRequest request, HttpServletResponse response) {
