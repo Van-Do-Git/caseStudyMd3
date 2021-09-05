@@ -75,7 +75,17 @@ public class ExpenditureServlet extends HttpServlet {
     }
 
     private void showFormEditExpenditure(HttpServletRequest request, HttpServletResponse response) {
-
+        int id_ex = Integer.parseInt(request.getParameter("idexp"));
+        Expenditure expenditure = expenditureService.findById(id_ex);
+        request.setAttribute("ex", expenditure);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/editexp.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -92,7 +92,21 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public Expenditure findById(int id) {
         Expenditure expenditure = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_ID);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Date date = rs.getDate(2);
+                int money = rs.getInt(3);
+                String note = rs.getString(4);
+                Category category = categoryExService.findById(rs.getInt(5));
+                expenditure = new Expenditure(id, category, date, money, note);
+            }
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditure;
     }
 
