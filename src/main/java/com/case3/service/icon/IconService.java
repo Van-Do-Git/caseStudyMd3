@@ -33,12 +33,6 @@ public class IconService {
         return listIcon;
     }
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 95f0248b3da39bb2445c7aba509bcd3aa9298b52
     public void editIcon(int id, String linkIcon) {
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_ICON);
@@ -59,12 +53,5 @@ public class IconService {
             throwables.printStackTrace();
         }
     }
-
+//    Hello world
 }
-
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 95f0248b3da39bb2445c7aba509bcd3aa9298b52
