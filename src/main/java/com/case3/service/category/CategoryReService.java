@@ -10,18 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryReService implements ICategoryService {
+public class CategoryReService implements ICategoryService{
     private static final String SELECT_CATEGORIES_BY_USER_ID = "select * from revenue_categories join icon on revenue_categories.id_icon = icon.id_icon where id_user=?;";
     private static final String SELECT_CATEGORIES_BY_ID = "select *from revenue_categories join icon on revenue_categories.id_icon = icon.id_icon where id_rc=?;";
     private static final String II_RE_CATEGORIES = "insert into revenue_categories(name_rc,id_icon,id_user) value (?,?,?)";
-    private static final String INSERT_RE_CATEGORY = "insert into revenue_categories (name_rc, id_icon, id_user) value (?,?,?)";
-    private static final String UPDATE_RE_CATEGORY = "update revenue_categories set name_rc = ? where id_rc =?;";
-    private static final String DELETE_RE_CATEGORY = "delete from revenue_categories where id_rc=?;";
-    private static final String SELECT_RE_CATEGORY_BY_USER_ID = "select * from revenue_categories join icon on revenue_categories.id_icon = icon.id_icon where id_user=?;";
-
 
     Connection connection = ConnectionJDBC.getConnection();
-
     @Override
     public List<Category> findAll() {
         return null;
@@ -48,41 +42,17 @@ public class CategoryReService implements ICategoryService {
 
     @Override
     public void save(Category category) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(INSERT_RE_CATEGORY);
-            statement.setInt(1, category.getId());
-            statement.setString(2, category.getName());
-            statement.setString(3, category.getLinkIcon());
-            statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
     }
 
     @Override
     public void edit(Category category, int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_RE_CATEGORY);
-            statement.setInt(1, category.getId());
-            statement.setString(1, category.getName());
-            statement.setString(1, category.getLinkIcon());
-            statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
     }
 
     @Override
     public void delete(int id) {
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(DELETE_RE_CATEGORY);
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
+        System.out.println("namluty");
     }
 
     public List<Category> findByIdUser(int id) {
@@ -90,10 +60,6 @@ public class CategoryReService implements ICategoryService {
         try {
 
             PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
-
-
-
-
 
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -108,7 +74,8 @@ public class CategoryReService implements ICategoryService {
         }
         return lists;
     }
-    
+
+
     public void addNewCate(int idIcon, String nameCate, int id) {
         try {
             PreparedStatement statement = connection.prepareStatement(II_RE_CATEGORIES);
@@ -123,23 +90,23 @@ public class CategoryReService implements ICategoryService {
     }
 
     @Override
-    public List<Category> findAllByUserId(int id_user) {
-        List<Category> categories_Ex = new ArrayList<>();
+    public List<Category> findAllByUserId(int id) {
+        List<Category> lists = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement(SELECT_RE_CATEGORY_BY_USER_ID);
-            statement.setInt(1, id_user);
-            ResultSet resultSet = statement.executeQuery();
 
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                int id_ec = resultSet.getInt("id_rc");
                 String name = resultSet.getString("name_rc");
                 String linkIcon = resultSet.getString("link_icon");
-                Category category = new Category(id, name, linkIcon);
-                categories_Ex.add(category);
+                lists.add(new Category(id_ec, name, linkIcon));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return categories_Ex;
+        return lists;
     }
 }

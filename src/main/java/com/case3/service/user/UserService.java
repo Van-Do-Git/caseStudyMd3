@@ -17,7 +17,6 @@ public class UserService implements IUserService<User> {
     private static final String FIND_USER = "select * from users join role on users.id_role = role.id_role join limited on users.id_user = limited.id_user where username = ? and password = ?;";
     private static final String ADD_USER = "insert into users(fullName, phone, username, password, id_role) VALUE (?,?,?,?,?);";
     private static final String ADD_LIMITED = "insert into limited(id_user) VALUE (?);";
-    private static final String DELETE_USER_BY_ID = "delete from users where id_user = ?";
     private static final String SELECT_ALL_USERS = "select * from role join users on role.id_role = users.id_role;";
     private static List<Category> listExCate = new ArrayList<>();
     private static List<Category> listReCate = new ArrayList<>();
