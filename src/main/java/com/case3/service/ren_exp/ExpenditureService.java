@@ -232,7 +232,20 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByWeek(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureByCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_WEEK_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureByCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureByCategories;
 
     }
@@ -240,14 +253,40 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByMonth(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureByCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_MONTH_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureByCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureByCategories;
     }
 
     @Override
     public Map<String, Integer> sumMoneyOfCategoryByDay(int id_user, Date date) {
         Map<String, Integer> sumMoneyExpenditureCategories = new HashMap<>();
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORY_AND_SUM_MONEY_BY_USER_ID_AND_DAY_OF_DATE);
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String categoryName = rs.getString(1);
+                int sumMoney = rs.getInt(2);
+                sumMoneyExpenditureCategories.put(categoryName, sumMoney);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return sumMoneyExpenditureCategories;
     }
 
