@@ -155,21 +155,58 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public List<Expenditure> findByDay(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_DAY_AND_USER_ID);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
     @Override
     public List<Expenditure> findByWeek(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_USER_ID_AND_WEEK_OF_DATE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
+
     }
 
     @Override
     public List<Expenditure> findByMonth(Date date, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_USER_ID_AND_MONTH_OF_DATE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setInt(1, id_user);
+            statement.setString(2, dateFormat.format(date));
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
