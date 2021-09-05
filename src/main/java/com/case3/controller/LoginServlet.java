@@ -87,7 +87,23 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void editStatus(HttpServletRequest request, HttpServletResponse response) {
-
+        int idUser =Integer.parseInt(request.getParameter("idUser"));
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        if(status){
+            userService.updateStatus(idUser,false);
+        }else {
+            userService.updateStatus(idUser,true);
+        }
+        List<User> userList = userService.findAll();
+        request.setAttribute("userList", userList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void singUp(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
