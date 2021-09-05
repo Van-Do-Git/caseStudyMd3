@@ -114,11 +114,6 @@ public class CategoryExService implements ICategoryService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> cac0b83f39e30372f24b68d727b94448c104b31a
     }
 
     @Override
@@ -140,9 +135,5 @@ public class CategoryExService implements ICategoryService {
             throwables.printStackTrace();
         }
         return categories_Ex;
-<<<<<<< HEAD
->>>>>>> 8f6de2aa99c69dfc823cf5c7a7372afbb96b1b52
-=======
->>>>>>> cac0b83f39e30372f24b68d727b94448c104b31a
     }
 }

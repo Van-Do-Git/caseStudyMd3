@@ -1,5 +1,6 @@
 package com.case3.controller;
 
+import com.case3.model.Icon;
 import com.case3.model.User;
 import com.case3.service.icon.IconService;
 import com.case3.service.user.UserService;
@@ -123,11 +124,46 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+        String username = request.getParameter("userName");
+        String password = request.getParameter("password");
+        User user = userService.findByUsernameAndPassword(username, password);
+        String destPage;
+        if (user != null) {
+            if (user.isStatus() && user.getRole().equals("other")) {
+                HttpSession session = request.getSession();
+                request.setAttribute("message", null);
+                session.setAttribute("user", user);
+                destPage = "/expenditure";
+            } else if (user.isStatus() && user.getRole().equals("admin")) {
+                HttpSession session = request.getSession();
+                List<Icon> iconList = iconService.findAll();
+                session.setAttribute("icon", iconList );
+                request.setAttribute("message", null);
+                session.setAttribute("user", user);
+                List<User> userList = userService.findAll();
+                request.setAttribute("userList", userList);
+                destPage = "/admin.jsp";
+            } else {
+                destPage = "/homepage?action=&username=&password=";
+                request.setAttribute("message", "Tài khoản của bạn đã bị khóa (vì lướt Facebook có nội dung cấm!)");
+            }
+        } else {
+            destPage = "/homepage?action=&username=&password=";
+            request.setAttribute("message", "Tài khoản không đúng, vui lòng đăng nhập lại hoặc đăng ký!");
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showHomepage(HttpServletRequest request, HttpServletResponse response) {
 
     }
-
 }
