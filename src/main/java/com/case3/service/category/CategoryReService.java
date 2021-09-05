@@ -1,0 +1,55 @@
+package com.case3.service.category;
+
+import com.case3.config.ConnectionJDBC;
+import com.case3.model.Category;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CategoryReService implements ICategoryService{
+    private static final String SELECT_CATEGORIES_BY_USER_ID = "select * from revenue_categories join icon on revenue_categories.id_icon = icon.id_icon where id_user=?;";
+    private static final String SELECT_CATEGORIES_BY_ID = "select *from revenue_categories join icon on revenue_categories.id_icon = icon.id_icon where id_rc=?;";
+    private static final String II_RE_CATEGORIES = "insert into revenue_categories(name_rc,id_icon,id_user) value (?,?,?)";
+
+    Connection connection = ConnectionJDBC.getConnection();
+    @Override
+    public List<Category> findAll() {
+        return null;
+    }
+
+    @Override
+    public Category findById(int id) {
+        Category category = null;
+        return category;
+    }
+
+    @Override
+    public void save(Category category) {
+
+    }
+
+    @Override
+    public void edit(Category category, int id) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+        System.out.println("namluty");
+    }
+
+    public List<Category> findByIdUser(int id) {
+        List<Category> lists = new ArrayList<>();
+
+        return lists;
+    }
+
+
+    public void addNewCate(int idIcon, String nameCate, int id) {
+
+    }
+}
