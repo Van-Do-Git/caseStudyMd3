@@ -112,7 +112,17 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
 
     @Override
     public void save(Expenditure e) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(II_EXPENDITURE);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            statement.setString(1, dateFormat.format(e.getDate()));
+            statement.setInt(2, e.getMoney());
+            statement.setString(3, e.getNote());
+            statement.setInt(4, e.getCategory().getId());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
