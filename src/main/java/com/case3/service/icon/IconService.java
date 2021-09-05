@@ -18,6 +18,17 @@ public class IconService {
 
     public List<Icon> findAll() {
         List<Icon> listIcon = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_ICON);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id_icon");
+                String link = resultSet.getString("link_icon");
+                listIcon.add(new Icon(id, link));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return listIcon;
     }
 

@@ -24,6 +24,19 @@ public class CategoryReService implements ICategoryService{
     @Override
     public Category findById(int id) {
         Category category = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_ID);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id_rc = resultSet.getInt("id_rc");
+                String name = resultSet.getString("name_rc");
+                String linkIcon = resultSet.getString("link_icon");
+                category = new Category(id_rc, name, linkIcon);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return category;
     }
 
@@ -39,17 +52,38 @@ public class CategoryReService implements ICategoryService{
 
     @Override
     public void delete(int id) {
-        System.out.println("namluty");
     }
 
     public List<Category> findByIdUser(int id) {
         List<Category> lists = new ArrayList<>();
+        try {
 
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id_ec = resultSet.getInt("id_rc");
+                String name = resultSet.getString("name_rc");
+                String linkIcon = resultSet.getString("link_icon");
+                lists.add(new Category(id_ec, name, linkIcon));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return lists;
     }
 
 
     public void addNewCate(int idIcon, String nameCate, int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(II_RE_CATEGORIES);
+            statement.setString(1, nameCate);
+            statement.setInt(2, idIcon);
+            statement.setInt(3, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
