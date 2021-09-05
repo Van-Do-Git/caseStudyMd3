@@ -27,6 +27,19 @@ public class CategoryExService implements ICategoryService {
     @Override
     public Category findById(int id) {
         Category category = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_ID);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id_ec = resultSet.getInt("id_ec");
+                String name = resultSet.getString("name_ec");
+                String linkIcon = resultSet.getString("link_icon");
+                category = new Category(id_ec, name, linkIcon);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return category;
     }
 
