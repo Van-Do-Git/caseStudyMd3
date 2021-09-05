@@ -60,7 +60,21 @@ public class CategoryExService implements ICategoryService {
 
     public List<Category> findByIdUser(int id) {
         List<Category> lists = new ArrayList<>();
+        try {
 
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id_ec = resultSet.getInt("id_ec");
+                String name = resultSet.getString("name_ec");
+                String linkIcon = resultSet.getString("link_icon");
+                lists.add(new Category(id_ec, name, linkIcon));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return lists;
     }
 
