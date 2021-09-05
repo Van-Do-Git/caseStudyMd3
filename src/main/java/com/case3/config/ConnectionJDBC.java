@@ -10,7 +10,7 @@ public class ConnectionJDBC {
 
     public static final String URL = "jdbc:mysql://localhost:3306/casestudymodule3?characterEncoding=UTF-8";
     public static final String USER_NAME = "root";
-    public static final String PASSWORD = "123456";
+    public static final String PASSWORD = "vubinh111111";
 
     public static Connection getConnection() {
         if (connection == null) {
