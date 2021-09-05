@@ -1,6 +1,7 @@
 package com.case3.controller;
 
 import com.case3.model.User;
+import com.case3.service.icon.IconService;
 import com.case3.service.user.UserService;
 import com.case3.validate.Validate;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @WebServlet(name = "login", value = "/homepage")
 public class LoginServlet extends HttpServlet {
     private UserService userService = new UserService();
+    private IconService iconService = new IconService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         }
         switch (action) {
             case "editStatus":
-                editStatus(request,response);
+                editStatus(request, response);
                 break;
             default:
                 showHomepage(request, response);
@@ -47,8 +49,39 @@ public class LoginServlet extends HttpServlet {
             case "signUp":
                 singUp(request, response);
                 break;
+            case "editIcon":
+                editIcon(request, response);
+            case "addIcon":
+                addIcon(request, response);
             default:
                 showHomepage(request, response);
+        }
+    }
+
+    private void addIcon(HttpServletRequest request, HttpServletResponse response) {
+        String linkIcon = request.getParameter("linkIcon");
+        iconService.addIcon(linkIcon);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin.jsp?action=");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editIcon(HttpServletRequest request, HttpServletResponse response) {
+        int idIcon = Integer.parseInt(request.getParameter("idIcon"));
+        String linkIcon = request.getParameter("linkIcon");
+        iconService.editIcon(idIcon, linkIcon);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin.jsp?action=");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
