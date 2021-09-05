@@ -74,6 +74,10 @@ public class CategoryReService implements ICategoryService {
 
     @Override
     public void delete(int id) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8420a6f46d16d3c0919d0f569012fcc6759e9790
         try {
             PreparedStatement statement = connection.prepareStatement(DELETE_RE_CATEGORY);
             statement.setInt(1, id);
@@ -81,12 +85,26 @@ public class CategoryReService implements ICategoryService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8420a6f46d16d3c0919d0f569012fcc6759e9790
     }
 
     public List<Category> findByIdUser(int id) {
         List<Category> lists = new ArrayList<>();
         try {
+<<<<<<< HEAD
             PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+=======
+
+
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+
+
+
+
+>>>>>>> 8420a6f46d16d3c0919d0f569012fcc6759e9790
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -111,6 +129,10 @@ public class CategoryReService implements ICategoryService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8420a6f46d16d3c0919d0f569012fcc6759e9790
     }
 
     @Override
@@ -132,5 +154,9 @@ public class CategoryReService implements ICategoryService {
             throwables.printStackTrace();
         }
         return categories_Ex;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8420a6f46d16d3c0919d0f569012fcc6759e9790
     }
 }
