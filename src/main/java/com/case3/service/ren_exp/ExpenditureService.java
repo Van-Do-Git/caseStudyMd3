@@ -213,7 +213,19 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
     @Override
     public List<Expenditure> findByMoney(int minMoney, int maxMoney, int id_user) {
         List<Expenditure> expenditures = new ArrayList<>();
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_EXPENDITURE_BY_MONEY_AND_USER_ID);
+            statement.setInt(1, id_user);
+            statement.setInt(2, minMoney);
+            statement.setInt(3, maxMoney);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                expenditures.add(findById(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return expenditures;
     }
 
