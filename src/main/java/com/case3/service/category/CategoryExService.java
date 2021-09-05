@@ -79,6 +79,14 @@ public class CategoryExService implements ICategoryService {
     }
 
     public void addNewCate(int idIcon, String nameCate, int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(II_EX_CATEGORIES);
+            statement.setString(1, nameCate);
+            statement.setInt(2, idIcon);
+            statement.setInt(3, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
