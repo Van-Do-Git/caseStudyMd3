@@ -288,5 +288,4 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
         }
         return sumMoneyExpenditureCategories;
     }
-
 }

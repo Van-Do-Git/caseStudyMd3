@@ -34,9 +34,6 @@ public class IconService {
         return listIcon;
     }
 
-<<<<<<< HEAD
-}
-=======
     public void editIcon(int id, String linkIcon) {
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_ICON);
@@ -58,4 +55,4 @@ public class IconService {
         }
     }
 }
->>>>>>> d4b6af7f51f33c0d3b251eabc158a42653ebdd74
+
