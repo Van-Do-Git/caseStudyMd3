@@ -12,7 +12,6 @@ import java.util.List;
 public class UserService implements IUserService<User> {
     private static final String UPDATE_STATUS = "update users set status = ? where id_user = ?;";
     Connection connection = ConnectionJDBC.getConnection();
-private static final String FIND_USER_BY_ID = "select * from users where id_user = ? ;";
     private static final String ADD_EX_CATE = "insert into expenditure_categories(name_ec,id_icon,id_user) value (?,?,?)";
     private static final String ADD_RE_CATE = "insert into revenue_categories(name_rc,id_icon,id_user) value (?,?,?)";
     private static final String FIND_USER = "select * from users join role on users.id_role = role.id_role join limited on users.id_user = limited.id_user where username = ? and password = ?;";
@@ -56,13 +55,6 @@ private static final String FIND_USER_BY_ID = "select * from users where id_user
 
     @Override
     public User findById(int id) {
-        User user = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return null;
     }
 

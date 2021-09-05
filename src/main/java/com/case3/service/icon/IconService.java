@@ -2,9 +2,7 @@ package com.case3.service.icon;
 
 import com.case3.config.ConnectionJDBC;
 import com.case3.model.Icon;
-import com.case3.service.IService;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,10 +33,9 @@ public class IconService {
         return listIcon;
     }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> a5c9191a0e1c4a8d597238a448af1e4c6fc81206
+
+
     public void editIcon(int id, String linkIcon) {
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_ICON);
@@ -59,9 +56,9 @@ public class IconService {
             throwables.printStackTrace();
         }
     }
-<<<<<<< HEAD
+
 }
 
-=======
-}
->>>>>>> a5c9191a0e1c4a8d597238a448af1e4c6fc81206
+
+
+
