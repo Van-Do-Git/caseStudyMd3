@@ -16,6 +16,7 @@ public class IconService {
     private static final String FIND_ALL_ICON = "select * from icon;";
     private static final String UPDATE_ICON = "update icon set link_icon = ? where id_icon = ?;";
     private static final String ADD_ICON = "insert into icon(link_icon) value (?);";
+
     Connection connection = ConnectionJDBC.getConnection();
 
     public List<Icon> findAll() {
@@ -34,7 +35,10 @@ public class IconService {
         return listIcon;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a5c9191a0e1c4a8d597238a448af1e4c6fc81206
     public void editIcon(int id, String linkIcon) {
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_ICON);
@@ -55,5 +59,9 @@ public class IconService {
             throwables.printStackTrace();
         }
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> a5c9191a0e1c4a8d597238a448af1e4c6fc81206
