@@ -143,7 +143,13 @@ public class ExpenditureService implements IRenExpService<Expenditure> {
 
     @Override
     public void delete(int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_EXPENDITURE_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

@@ -44,14 +44,45 @@ public class LimitedService implements ILimitedService<Limited> {
 
     public Limited findByIdUser(int id_user) {
         Limited limited = new Limited();
-
+        try {
+            Connection connection = ConnectionJDBC.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SELECT_LIMITED_BY_USER_ID);
+            statement.setInt(1, id_user);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int id_limited = resultSet.getInt("id_limited");
+                int limit_day = resultSet.getInt("limit_day");
+                int limit_month = resultSet.getInt("limit_month");
+                limited.setId(id_limited);
+                limited.setLimitDay(limit_day);
+                limited.setLimitMonth(limit_month);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return limited;
     }
 
     public void upateLimitDay(int id_user, int limitday) {
-
+        try {
+            Connection connection = ConnectionJDBC.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_LIMIT_DAY);
+            statement.setInt(1, limitday);
+            statement.setInt(2, id_user);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
     public void upateLimitMonth(int id_user, int limitmonth) {
-
+        try {
+            Connection connection = ConnectionJDBC.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_LIMIT_MONTH);
+            statement.setInt(1, limitmonth);
+            statement.setInt(2, id_user);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
