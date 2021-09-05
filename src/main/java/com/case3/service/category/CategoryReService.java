@@ -52,12 +52,25 @@ public class CategoryReService implements ICategoryService{
 
     @Override
     public void delete(int id) {
-        System.out.println("namluty");
     }
 
     public List<Category> findByIdUser(int id) {
         List<Category> lists = new ArrayList<>();
+        try {
 
+            PreparedStatement statement = connection.prepareStatement(SELECT_CATEGORIES_BY_USER_ID);
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id_ec = resultSet.getInt("id_rc");
+                String name = resultSet.getString("name_rc");
+                String linkIcon = resultSet.getString("link_icon");
+                lists.add(new Category(id_ec, name, linkIcon));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return lists;
     }
 
