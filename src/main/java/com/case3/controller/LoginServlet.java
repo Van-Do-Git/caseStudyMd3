@@ -57,7 +57,36 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void singUp(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/homepage?action=&username=&password=");
+        String fullName = request.getParameter("fullName");
+        String username = request.getParameter("userName");
+        String phone = request.getParameter("phoneNumber");
+        String password = request.getParameter("password");
+        String role = "other";
+        boolean status = true;
+        User user = new User(fullName, phone, username, password, role, status);
+        String message;
+        Validate validate = Validate.getInstance();
+        if (validate.validate(username, validate.regexUsername)
+                && validate.validate(phone, validate.regexPhone)
+                && validate.validate(password, validate.regexPassword)) {
+            userService.save(user);
+            message = "Đăng ký thành công!";
+            request.setAttribute("message", message);
+        } else {
+            message = "Đăng ký không thành công - Vui lòng nhập lại!";
+            request.setAttribute("message", message);
+            request.setAttribute("user", user);
+        }
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
